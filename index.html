@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css"><link rel="stylesheet" href="css/L.Control.Locate.min.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <style>
+        #map {
+            width: 1167px;
+            height: 735px;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script><script src="js/L.Control.Locate.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script src="data/UP_VI_Tunjungan_1.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString') {
+              highlightLayer.setStyle({
+                color: '#ffff00',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 1
+              });
+            }
+            highlightLayer.openPopup();
+        }
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[-7.311183449926175,112.73211090070367],[-7.294687565213186,112.75827204188889]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        L.control.locate({locateOptions: {maxZoom: 19}}).addTo(map);
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .className += ' fas fa-ruler';
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_ESRISatelliteArcGISWorld_Imagery_0');
+        map.getPane('pane_ESRISatelliteArcGISWorld_Imagery_0').style.zIndex = 400;
+        var layer_ESRISatelliteArcGISWorld_Imagery_0 = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            pane: 'pane_ESRISatelliteArcGISWorld_Imagery_0',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 19
+        });
+        layer_ESRISatelliteArcGISWorld_Imagery_0;
+        map.addLayer(layer_ESRISatelliteArcGISWorld_Imagery_0);
+        function pop_UP_VI_Tunjungan_1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Kode'] !== null ? autolinker.link(feature.properties['Kode'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Keterangan</strong><br />' + (feature.properties['Keterangan'] !== null ? autolinker.link(feature.properties['Keterangan'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Zona</strong><br />' + (feature.properties['Zona'] !== null ? autolinker.link(feature.properties['Zona'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Sub_Zona</strong><br />' + (feature.properties['Sub_Zona'] !== null ? autolinker.link(feature.properties['Sub_Zona'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Kawasan</strong><br />' + (feature.properties['Kawasan'] !== null ? autolinker.link(feature.properties['Kawasan'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Sub_UP</strong><br />' + (feature.properties['Sub_UP'] !== null ? autolinker.link(feature.properties['Sub_UP'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>UP</strong><br />' + (feature.properties['UP'] !== null ? autolinker.link(feature.properties['UP'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Blok</strong><br />' + (feature.properties['Blok'] !== null ? autolinker.link(feature.properties['Blok'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Luas</strong><br />' + (feature.properties['Luas'] !== null ? autolinker.link(feature.properties['Luas'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_UP_VI_Tunjungan_1_0(feature) {
+            switch(String(feature.properties['Zona'])) {
+                case 'Industri':
+                    return {
+                pane: 'pane_UP_VI_Tunjungan_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(75,213,29,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Jalan':
+                    return {
+                pane: 'pane_UP_VI_Tunjungan_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(94,219,188,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Perdagangan dan Jasa':
+                    return {
+                pane: 'pane_UP_VI_Tunjungan_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(101,227,133,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Perkantoran':
+                    return {
+                pane: 'pane_UP_VI_Tunjungan_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(141,108,238,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Perlindungan Setempat':
+                    return {
+                pane: 'pane_UP_VI_Tunjungan_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(230,179,24,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Perumahan':
+                    return {
+                pane: 'pane_UP_VI_Tunjungan_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(238,75,194,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Peruntukan Khusus':
+                    return {
+                pane: 'pane_UP_VI_Tunjungan_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(206,232,129,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Ruang Terbuka Hijau':
+                    return {
+                pane: 'pane_UP_VI_Tunjungan_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(78,115,226,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Saluran':
+                    return {
+                pane: 'pane_UP_VI_Tunjungan_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(229,141,111,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Sarana Pelayanan Umum':
+                    return {
+                pane: 'pane_UP_VI_Tunjungan_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(189,29,238,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Sungai':
+                    return {
+                pane: 'pane_UP_VI_Tunjungan_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(227,53,93,1.0)',
+                interactive: true,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_UP_VI_Tunjungan_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(20,162,209,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_UP_VI_Tunjungan_1');
+        map.getPane('pane_UP_VI_Tunjungan_1').style.zIndex = 401;
+        map.getPane('pane_UP_VI_Tunjungan_1').style['mix-blend-mode'] = 'normal';
+        var layer_UP_VI_Tunjungan_1 = new L.geoJson(json_UP_VI_Tunjungan_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_UP_VI_Tunjungan_1',
+            layerName: 'layer_UP_VI_Tunjungan_1',
+            pane: 'pane_UP_VI_Tunjungan_1',
+            onEachFeature: pop_UP_VI_Tunjungan_1,
+            style: style_UP_VI_Tunjungan_1_0,
+        });
+        bounds_group.addLayer(layer_UP_VI_Tunjungan_1);
+        map.addLayer(layer_UP_VI_Tunjungan_1);
+        var osmGeocoder = new L.Control.Geocoder({
+            collapsed: true,
+            position: 'topleft',
+            text: 'Search',
+            title: 'Testing'
+        }).addTo(map);
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .className += ' fa fa-search';
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .title += 'Search for a place';
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'UP_VI_Tunjungan<br /><table><tr><td style="text-align: center;"><img src="legend/UP_VI_Tunjungan_1_Industri0.png" /></td><td>Industri</td></tr><tr><td style="text-align: center;"><img src="legend/UP_VI_Tunjungan_1_Jalan1.png" /></td><td>Jalan</td></tr><tr><td style="text-align: center;"><img src="legend/UP_VI_Tunjungan_1_PerdagangandanJasa2.png" /></td><td>Perdagangan dan Jasa</td></tr><tr><td style="text-align: center;"><img src="legend/UP_VI_Tunjungan_1_Perkantoran3.png" /></td><td>Perkantoran</td></tr><tr><td style="text-align: center;"><img src="legend/UP_VI_Tunjungan_1_PerlindunganSetempat4.png" /></td><td>Perlindungan Setempat</td></tr><tr><td style="text-align: center;"><img src="legend/UP_VI_Tunjungan_1_Perumahan5.png" /></td><td>Perumahan</td></tr><tr><td style="text-align: center;"><img src="legend/UP_VI_Tunjungan_1_PeruntukanKhusus6.png" /></td><td>Peruntukan Khusus</td></tr><tr><td style="text-align: center;"><img src="legend/UP_VI_Tunjungan_1_RuangTerbukaHijau7.png" /></td><td>Ruang Terbuka Hijau</td></tr><tr><td style="text-align: center;"><img src="legend/UP_VI_Tunjungan_1_Saluran8.png" /></td><td>Saluran</td></tr><tr><td style="text-align: center;"><img src="legend/UP_VI_Tunjungan_1_SaranaPelayananUmum9.png" /></td><td>Sarana Pelayanan Umum</td></tr><tr><td style="text-align: center;"><img src="legend/UP_VI_Tunjungan_1_Sungai10.png" /></td><td>Sungai</td></tr><tr><td style="text-align: center;"><img src="legend/UP_VI_Tunjungan_1_11.png" /></td><td></td></tr></table>': layer_UP_VI_Tunjungan_1,"ESRI Satellite (ArcGIS/World_Imagery)": layer_ESRISatelliteArcGISWorld_Imagery_0,}).addTo(map);
+        setBounds();
+        </script>
+    </body>
+</html>
